@@ -19,13 +19,18 @@ const Index = () => {
       setFrameImage(img);
     };
     img.onerror = () => {
-      toast.error("Error loading frame image");
+      toast.error("Erro ao carregar a moldura");
     };
   }, []);
 
   const handleImageUpload = (imageDataUrl: string) => {
     setUploadedImage(imageDataUrl);
-    toast.success("Image uploaded successfully!");
+    toast.success("Imagem carregada com sucesso!");
+  };
+
+  const handleResetImage = () => {
+    setUploadedImage(null);
+    toast.info("Você pode selecionar uma nova foto");
   };
 
   return (
@@ -47,17 +52,41 @@ const Index = () => {
         <div className="w-full max-w-3xl grid gap-8">
           {!uploadedImage ? (
             <Card>
-              <CardHeader>
+              <CardHeader className="text-center">
                 <CardTitle className="text-lon-blue">Upload da sua foto</CardTitle>
                 <CardDescription>Selecione uma imagem JPG ou PNG para começar</CardDescription>
               </CardHeader>
-              <CardContent>
-                <ImageUploader onImageUpload={handleImageUpload} />
+              <CardContent className="flex flex-col items-center">
+                <div className="mb-6 text-center">
+                  <h3 className="font-medium text-gray-700 mb-3">A moldura ficará assim:</h3>
+                  {frameImage && (
+                    <div className="mx-auto max-w-[300px]">
+                      <img 
+                        src="/lovable-uploads/6666656a-d829-45d8-85c3-3d15d31e1597.png" 
+                        alt="Moldura CISP" 
+                        className="w-full h-auto"
+                      />
+                    </div>
+                  )}
+                </div>
+                
+                <div className="w-full space-y-6">
+                  <div className="space-y-4 mb-6">
+                    <h3 className="font-medium text-gray-700 text-center">Como funciona:</h3>
+                    <ol className="list-decimal list-inside text-gray-600 space-y-2 text-left">
+                      <li>Faça o upload da sua foto</li>
+                      <li>Veja o resultado com a moldura aplicada</li>
+                      <li>Baixe a imagem final</li>
+                      <li>Compartilhe nas suas redes sociais!</li>
+                    </ol>
+                  </div>
+                  <ImageUploader onImageUpload={handleImageUpload} />
+                </div>
               </CardContent>
             </Card>
           ) : (
             <Card>
-              <CardHeader>
+              <CardHeader className="text-center">
                 <CardTitle className="text-lon-blue">Preview & Download</CardTitle>
                 <CardDescription>Sua foto com moldura está pronta</CardDescription>
               </CardHeader>
@@ -67,6 +96,7 @@ const Index = () => {
                   frameImage={frameImage} 
                   isGeneratingDownload={isGeneratingDownload}
                   setIsGeneratingDownload={setIsGeneratingDownload}
+                  onResetImage={handleResetImage}
                 />
               </CardContent>
             </Card>

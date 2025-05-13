@@ -1,7 +1,7 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Download } from "lucide-react";
+import { Download, RefreshCcw } from "lucide-react";
 import { toast } from "sonner";
 
 interface ImageEditorProps {
@@ -9,13 +9,15 @@ interface ImageEditorProps {
   frameImage: HTMLImageElement | null;
   isGeneratingDownload: boolean;
   setIsGeneratingDownload: (isGenerating: boolean) => void;
+  onResetImage: () => void;
 }
 
 export const ImageEditor: React.FC<ImageEditorProps> = ({ 
   userImage, 
   frameImage,
   isGeneratingDownload,
-  setIsGeneratingDownload
+  setIsGeneratingDownload,
+  onResetImage
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [isRendered, setIsRendered] = useState(false);
@@ -168,23 +170,34 @@ export const ImageEditor: React.FC<ImageEditorProps> = ({
         )}
       </div>
       
-      <Button 
-        onClick={handleDownload} 
-        disabled={!isRendered || isGeneratingDownload}
-        className="bg-lon-red hover:bg-lon-blue text-white py-2 px-6 rounded-md flex items-center gap-2"
-      >
-        {isGeneratingDownload ? (
-          <>
-            <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-            <span>Gerando...</span>
-          </>
-        ) : (
-          <>
-            <Download className="h-5 w-5" />
-            <span>Baixar imagem com moldura</span>
-          </>
-        )}
-      </Button>
+      <div className="flex flex-col items-center gap-4">
+        <Button 
+          onClick={handleDownload} 
+          disabled={!isRendered || isGeneratingDownload}
+          className="bg-lon-red hover:bg-lon-blue text-white py-2 px-6 rounded-md flex items-center gap-2"
+        >
+          {isGeneratingDownload ? (
+            <>
+              <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+              <span>Gerando...</span>
+            </>
+          ) : (
+            <>
+              <Download className="h-5 w-5" />
+              <span>Baixar imagem com moldura</span>
+            </>
+          )}
+        </Button>
+        
+        <Button 
+          onClick={onResetImage} 
+          variant="outline"
+          className="border-lon-blue text-lon-blue hover:bg-lon-blue hover:text-white flex items-center gap-2"
+        >
+          <RefreshCcw className="h-5 w-5" />
+          <span>Carregar outra foto</span>
+        </Button>
+      </div>
     </div>
   );
 };
