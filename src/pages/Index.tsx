@@ -29,42 +29,56 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col items-center py-8 px-4">
-      <header className="mb-8 text-center">
-        <h1 className="text-3xl font-bold text-lon-blue mb-2">Lon Systems</h1>
-        <p className="text-gray-600 max-w-2xl">
-          Upload your photo and download it with our professional frame overlay
-        </p>
+    <div className="min-h-screen bg-white flex flex-col">
+      <header className="py-6 px-4 border-b border-gray-100">
+        <h1 className="text-3xl md:text-4xl font-bold text-center text-lon-blue">
+          CISP | Encontro SP 2025
+        </h1>
       </header>
 
-      <div className="w-full max-w-3xl grid gap-8">
-        {!uploadedImage ? (
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lon-blue">Upload Your Photo</CardTitle>
-              <CardDescription>Select a JPG or PNG image to get started</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <ImageUploader onImageUpload={handleImageUpload} />
-            </CardContent>
-          </Card>
-        ) : (
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lon-blue">Preview & Download</CardTitle>
-              <CardDescription>Your framed photo is ready</CardDescription>
-            </CardHeader>
-            <CardContent className="flex flex-col items-center">
-              <ImageEditor 
-                userImage={uploadedImage} 
-                frameImage={frameImage} 
-                isGeneratingDownload={isGeneratingDownload}
-                setIsGeneratingDownload={setIsGeneratingDownload}
-              />
-            </CardContent>
-          </Card>
-        )}
-      </div>
+      <main className="flex-1 flex flex-col items-center py-8 px-4 md:py-12">
+        <div className="w-full max-w-3xl mb-10 text-center">
+          <p className="text-gray-700 text-lg leading-relaxed mb-8">
+            Vai participar do CISP | Encontro SP 2025? Então entre no clima!<br />
+            Faça o upload da sua foto, aplique nossa moldura oficial e baixe para compartilhar com seus colegas nas redes sociais!
+          </p>
+        </div>
+
+        <div className="w-full max-w-3xl grid gap-8">
+          {!uploadedImage ? (
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lon-blue">Upload da sua foto</CardTitle>
+                <CardDescription>Selecione uma imagem JPG ou PNG para começar</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ImageUploader onImageUpload={handleImageUpload} />
+              </CardContent>
+            </Card>
+          ) : (
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lon-blue">Preview & Download</CardTitle>
+                <CardDescription>Sua foto com moldura está pronta</CardDescription>
+              </CardHeader>
+              <CardContent className="flex flex-col items-center">
+                <ImageEditor 
+                  userImage={uploadedImage} 
+                  frameImage={frameImage} 
+                  isGeneratingDownload={isGeneratingDownload}
+                  setIsGeneratingDownload={setIsGeneratingDownload}
+                />
+              </CardContent>
+            </Card>
+          )}
+        </div>
+      </main>
+
+      <footer className="py-6 px-4 mt-10 text-center">
+        <p className="text-gray-300 text-sm">
+          Lon Systems
+        </p>
+      </footer>
     </div>
   );
 };

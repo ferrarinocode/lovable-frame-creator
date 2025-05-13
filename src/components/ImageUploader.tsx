@@ -58,7 +58,7 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({ onImageUpload }) =
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
       className={`border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-colors ${
-        isDragging ? "border-lon-blue bg-blue-50" : "border-gray-300 hover:border-lon-blue"
+        isDragging ? "border-lon-red bg-red-50" : "border-gray-300 hover:border-lon-blue"
       }`}
       onClick={() => inputRef.current?.click()}
     >
@@ -69,11 +69,11 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({ onImageUpload }) =
         accept="image/jpeg, image/png"
         className="hidden"
       />
-      <Upload className="mx-auto h-12 w-12 text-gray-400" />
+      <Upload className="mx-auto h-12 w-12 text-lon-blue" />
       <p className="mt-4 text-sm text-gray-600">
-        Drag and drop your image here, or click to select a file
+        Arraste e solte sua imagem aqui, ou clique para selecionar
       </p>
-      <p className="mt-1 text-xs text-gray-500">JPG or PNG files only</p>
+      <p className="mt-1 text-xs text-gray-500">Apenas arquivos JPG ou PNG</p>
     </div>
   );
 };

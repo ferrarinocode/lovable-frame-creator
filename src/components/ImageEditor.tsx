@@ -37,6 +37,37 @@ export const ImageEditor: React.FC<ImageEditorProps> = ({
     canvas.width = frameImage.width;
     canvas.height = frameImage.height;
     
+    // Create a temporary image to analyze the frame's transparent area
+    const tempCanvas = document.createElement("canvas");
+    tempCanvas.width = frameImage.width;
+    tempCanvas.height = frameImage.height;
+    const tempCtx = tempCanvas.getContext("2d");
+    if (!tempCtx) return;
+    
+    // Draw frame to temp canvas to analyze transparent area
+    tempCtx.drawImage(frameImage, 0, 0);
+    const frameData = tempCtx.getImageData(0, 0, frameImage.width, frameImage.height);
+    
+    // Find the boundaries of the transparent area
+    let left = frameImage.width, right = 0, top = frameImage.height, bottom = 0;
+    
+    for (let y = 0; y < frameImage.height; y++) {
+      for (let x = 0; x < frameImage.width; x++) {
+        const idx = (y * frameImage.width + x) * 4;
+        // If pixel is transparent (alpha < 50)
+        if (frameData.data[idx + 3] < 50) {
+          left = Math.min(left, x);
+          right = Math.max(right, x);
+          top = Math.min(top, y);
+          bottom = Math.max(bottom, y);
+        }
+      }
+    }
+    
+    // Calculate dimensions of the transparent area
+    const cutoutWidth = right - left;
+    const cutoutHeight = bottom - top;
+    
     // Load user image
     const img = new Image();
     img.onload = () => {
@@ -45,18 +76,19 @@ export const ImageEditor: React.FC<ImageEditorProps> = ({
       // Clear canvas
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       
-      // Calculate scaling and positioning to fit user image
-      const scale = Math.max(
-        canvas.width / img.width,
-        canvas.height / img.height
-      );
+      // Calculate scaling to fit the cutout area exactly
+      const scaleX = cutoutWidth / img.width;
+      const scaleY = cutoutHeight / img.height;
+      const scale = Math.max(scaleX, scaleY); // Use max to ensure the image covers the entire cutout
       
       const scaledWidth = img.width * scale;
       const scaledHeight = img.height * scale;
-      const x = (canvas.width - scaledWidth) / 2;
-      const y = (canvas.height - scaledHeight) / 2;
       
-      // Draw the user image centered and scaled
+      // Center the image in the cutout area
+      const x = left + (cutoutWidth - scaledWidth) / 2;
+      const y = top + (cutoutHeight - scaledHeight) / 2;
+      
+      // Draw the user image centered and scaled to fill the cutout
       ctx.drawImage(img, x, y, scaledWidth, scaledHeight);
       
       // Draw the frame on top
@@ -70,7 +102,7 @@ export const ImageEditor: React.FC<ImageEditorProps> = ({
 
   const handleDownload = () => {
     if (!canvasRef.current || !isRendered) {
-      toast.error("Please wait for the image to render completely");
+      toast.error("Por favor, aguarde o carregamento completo da imagem");
       return;
     }
 
@@ -84,7 +116,7 @@ export const ImageEditor: React.FC<ImageEditorProps> = ({
         // For mobile devices
         canvasRef.current.toBlob((blob) => {
           if (!blob) {
-            toast.error("Failed to generate image");
+            toast.error("Falha ao gerar a imagem");
             setIsGeneratingDownload(false);
             return;
           }
@@ -93,31 +125,31 @@ export const ImageEditor: React.FC<ImageEditorProps> = ({
           
           // Create an anchor element and trigger download
           const link = document.createElement('a');
-          link.download = 'lon-systems-framed-photo.png';
+          link.download = 'CISP-Encontro-SP-2025.png';
           link.href = url;
           link.click();
           
           // Clean up
           URL.revokeObjectURL(url);
           setIsGeneratingDownload(false);
-          toast.success("Image downloaded successfully!");
+          toast.success("Imagem baixada com sucesso!");
         }, 'image/png');
       } else {
         // For desktop browsers
         const dataUrl = canvasRef.current.toDataURL('image/png');
         const link = document.createElement('a');
-        link.download = 'lon-systems-framed-photo.png';
+        link.download = 'CISP-Encontro-SP-2025.png';
         link.href = dataUrl;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
         
         setIsGeneratingDownload(false);
-        toast.success("Image downloaded successfully!");
+        toast.success("Imagem baixada com sucesso!");
       }
     } catch (error) {
       console.error("Download error:", error);
-      toast.error("Failed to download image");
+      toast.error("Falha ao baixar a imagem");
       setIsGeneratingDownload(false);
     }
   };
@@ -139,17 +171,17 @@ export const ImageEditor: React.FC<ImageEditorProps> = ({
       <Button 
         onClick={handleDownload} 
         disabled={!isRendered || isGeneratingDownload}
-        className="bg-lon-blue hover:bg-lon-lightblue text-white py-2 px-6 rounded-md flex items-center gap-2"
+        className="bg-lon-red hover:bg-lon-blue text-white py-2 px-6 rounded-md flex items-center gap-2"
       >
         {isGeneratingDownload ? (
           <>
             <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-            <span>Generating...</span>
+            <span>Gerando...</span>
           </>
         ) : (
           <>
             <Download className="h-5 w-5" />
-            <span>Download Framed Photo</span>
+            <span>Baixar imagem com moldura</span>
           </>
         )}
       </Button>
