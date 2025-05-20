@@ -1,11 +1,9 @@
-
 import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { ImageUploader } from "@/components/ImageUploader";
 import { ImageEditor } from "@/components/ImageEditor";
 import { toast } from "sonner";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-
 const Index = () => {
   const [uploadedImage, setUploadedImage] = useState<string | null>(null);
   const [frameImage, setFrameImage] = useState<HTMLImageElement | null>(null);
@@ -22,19 +20,15 @@ const Index = () => {
       toast.error("Erro ao carregar a moldura");
     };
   }, []);
-
   const handleImageUpload = (imageDataUrl: string) => {
     setUploadedImage(imageDataUrl);
     toast.success("Imagem carregada com sucesso!");
   };
-
   const handleResetImage = () => {
     setUploadedImage(null);
     toast.info("Você pode selecionar uma nova foto");
   };
-
-  return (
-    <div className="min-h-screen bg-white flex flex-col">
+  return <div className="min-h-screen bg-white flex flex-col">
       <header className="py-6 px-4 border-b border-gray-100">
         <h1 className="text-3xl md:text-4xl font-bold text-center text-lon-blue">
           CISP | Encontro SP 2025
@@ -50,8 +44,7 @@ const Index = () => {
         </div>
 
         <div className="w-full max-w-3xl grid gap-8">
-          {!uploadedImage ? (
-            <Card>
+          {!uploadedImage ? <Card>
               <CardHeader className="text-center">
                 <CardTitle className="text-lon-blue">Upload da sua foto</CardTitle>
                 <CardDescription>Selecione uma imagem JPG ou PNG para começar</CardDescription>
@@ -59,15 +52,9 @@ const Index = () => {
               <CardContent className="flex flex-col items-center">
                 <div className="mb-6 text-center">
                   <h3 className="font-medium text-gray-700 mb-3">A moldura ficará assim:</h3>
-                  {frameImage && (
-                    <div className="mx-auto max-w-[300px]">
-                      <img 
-                        src="/lovable-uploads/6666656a-d829-45d8-85c3-3d15d31e1597.png" 
-                        alt="Moldura CISP" 
-                        className="w-full h-auto"
-                      />
-                    </div>
-                  )}
+                  {frameImage && <div className="mx-auto max-w-[300px]">
+                      <img alt="Moldura CISP" src="/lovable-uploads/67192b0d-608a-4321-81b0-e5890c65c280.png" className="w-full h-auto object-scale-down" />
+                    </div>}
                 </div>
                 
                 <div className="w-full space-y-6">
@@ -83,24 +70,15 @@ const Index = () => {
                   <ImageUploader onImageUpload={handleImageUpload} />
                 </div>
               </CardContent>
-            </Card>
-          ) : (
-            <Card>
+            </Card> : <Card>
               <CardHeader className="text-center">
                 <CardTitle className="text-lon-blue">Preview & Download</CardTitle>
                 <CardDescription>Sua foto com moldura está pronta</CardDescription>
               </CardHeader>
               <CardContent className="flex flex-col items-center">
-                <ImageEditor 
-                  userImage={uploadedImage} 
-                  frameImage={frameImage} 
-                  isGeneratingDownload={isGeneratingDownload}
-                  setIsGeneratingDownload={setIsGeneratingDownload}
-                  onResetImage={handleResetImage}
-                />
+                <ImageEditor userImage={uploadedImage} frameImage={frameImage} isGeneratingDownload={isGeneratingDownload} setIsGeneratingDownload={setIsGeneratingDownload} onResetImage={handleResetImage} />
               </CardContent>
-            </Card>
-          )}
+            </Card>}
         </div>
       </main>
 
@@ -109,8 +87,6 @@ const Index = () => {
           Lon Systems
         </p>
       </footer>
-    </div>
-  );
+    </div>;
 };
-
 export default Index;
