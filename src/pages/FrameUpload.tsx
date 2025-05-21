@@ -42,24 +42,24 @@ const FrameUpload = () => {
   
   const handleContinue = () => {
     if (selectedFrame) {
-      // For a real app, we would upload this to a server and get an ID
-      // For now, we'll use a simple URL parameter with the timestamp as frameId
+      // Para um app real, enviaríamos isso para um servidor e receberíamos um ID
+      // Por enquanto, usaremos um parâmetro de URL simples com o timestamp como frameId
       const frameId = `custom-${Date.now()}`;
       localStorage.setItem(frameId, selectedFrame);
       navigate(`/photo-upload/${frameId}`);
       toast.success("Moldura selecionada com sucesso!");
     } else {
-      // If no frame was uploaded, use the default one
+      // Se nenhuma moldura foi carregada, use a padrão
       navigate(`/photo-upload/default`);
       toast.success("Moldura padrão selecionada!");
     }
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-lon-pastel-blue to-lon-pastel-purple flex flex-col">
+    <div className="min-h-screen bg-gradient-to-br from-lon-pastel-blue to-lon-pastel-teal flex flex-col">
       <header className="py-6 px-4 glass">
         <div className="max-w-5xl mx-auto">
-          <h1 className="text-3xl md:text-4xl font-bold text-center bg-gradient-to-r from-lon-blue to-lon-lightblue bg-clip-text text-transparent">
+          <h1 className="text-3xl md:text-4xl font-bold text-center lonpecta-text">
             LonFrame
           </h1>
           <p className="text-center text-gray-600 mt-2 text-sm md:text-base">
@@ -78,7 +78,7 @@ const FrameUpload = () => {
 
         <Card className="glass-card border-0 w-full max-w-3xl">
           <CardHeader className="text-center">
-            <CardTitle className="bg-gradient-to-r from-lon-blue to-lon-lightblue bg-clip-text text-transparent">Escolha ou carregue sua moldura</CardTitle>
+            <CardTitle className="lonpecta-text">Escolha ou carregue sua moldura</CardTitle>
             <CardDescription>Selecione uma moldura PNG transparente ou use nossa moldura padrão</CardDescription>
           </CardHeader>
           <CardContent>
@@ -105,7 +105,7 @@ const FrameUpload = () => {
               </div>
               
               <div className="space-y-6 w-full">
-                <div className="glass-card transition-all duration-300 hover:shadow-xl p-8 text-center cursor-pointer hover:bg-lon-pastel-blue/30">
+                <div className="glass-card transition-all duration-300 hover:shadow-xl p-8 text-center cursor-pointer hover:bg-lon-pastel-green/30">
                   <input
                     type="file"
                     id="frameInput"
@@ -138,7 +138,7 @@ const FrameUpload = () => {
                   <Button
                     onClick={handleContinue}
                     disabled={isUploading}
-                    className="bg-gradient-to-r from-lon-blue to-lon-lightblue hover:opacity-90 text-white flex items-center gap-2"
+                    className="lonpecta-gradient hover:opacity-90 text-white flex items-center gap-2"
                   >
                     {isUploading ? (
                       <>

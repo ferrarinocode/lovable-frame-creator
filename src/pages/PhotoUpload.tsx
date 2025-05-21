@@ -21,7 +21,7 @@ const PhotoUpload = () => {
   useEffect(() => {
     if (!frameId) {
       toast.error("Nenhuma moldura selecionada");
-      navigate("/frame-upload");
+      navigate("/");
       return;
     }
 
@@ -35,7 +35,7 @@ const PhotoUpload = () => {
         frameSrc = storedFrame;
       } else {
         toast.error("Moldura não encontrada");
-        navigate("/frame-upload");
+        navigate("/");
         return;
       }
     }
@@ -47,7 +47,7 @@ const PhotoUpload = () => {
     };
     img.onerror = () => {
       toast.error("Erro ao carregar a moldura");
-      navigate("/frame-upload");
+      navigate("/");
     };
   }, [frameId, navigate]);
 
@@ -112,16 +112,6 @@ const PhotoUpload = () => {
                     </ol>
                   </div>
                   <ImageUploader onImageUpload={handleImageUpload} />
-                  
-                  <div className="flex justify-center mt-4">
-                    <Button
-                      onClick={() => navigate("/frame-upload")}
-                      variant="outline"
-                      className="glass-card bg-transparent hover:bg-lon-pastel-blue/50 border-white/40 text-lon-blue"
-                    >
-                      Voltar para seleção de moldura
-                    </Button>
-                  </div>
                 </div>
               </CardContent>
             </Card>
@@ -141,16 +131,6 @@ const PhotoUpload = () => {
                   setIsGeneratingDownload={setIsGeneratingDownload}
                   onResetImage={handleResetImage}
                 />
-                
-                <div className="flex justify-center mt-4">
-                  <Button
-                    onClick={() => navigate("/frame-upload")}
-                    variant="outline"
-                    className="glass-card bg-transparent hover:bg-lon-pastel-blue/50 border-white/40 text-lon-blue"
-                  >
-                    Escolher outra moldura
-                  </Button>
-                </div>
               </CardContent>
             </Card>
           )}

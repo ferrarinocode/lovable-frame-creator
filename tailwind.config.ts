@@ -27,15 +27,17 @@ export default {
 				foreground: 'hsl(var(--foreground))',
 				lon: {
 					red: '#c6232c',
-					blue: '#274983',
-					lightblue: '#3a75c4',
+					blue: '#3b74c7', // Ajustado para o azul da logo
+					lightblue: '#67afcc', // Ajustado para um tom intermediário
+					green: '#44c99b', // Verde da logo
 					pastel: {
 						blue: '#D3E4FD',
-						green: '#F2FCE2',
+						green: '#E2F6EE', // Pastel verde para combinar com a logo
 						yellow: '#FEF7CD',
 						purple: '#E5DEFF',
 						pink: '#FFDEE2',
 						peach: '#FDE1D3',
+						teal: '#D5F2EC', // Nova cor pastel para complementar
 					}
 				},
 				primary: {

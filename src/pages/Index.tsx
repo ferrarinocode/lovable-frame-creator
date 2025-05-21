@@ -9,10 +9,10 @@ const Index = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-lon-pastel-blue to-lon-pastel-purple flex flex-col">
+    <div className="min-h-screen bg-gradient-to-br from-lon-pastel-blue to-lon-pastel-teal flex flex-col">
       <header className="py-6 px-4 glass">
         <div className="max-w-5xl mx-auto">
-          <h1 className="text-3xl md:text-4xl font-bold text-center bg-gradient-to-r from-lon-blue to-lon-lightblue bg-clip-text text-transparent">
+          <h1 className="text-3xl md:text-4xl font-bold text-center lonpecta-text">
             LonFrame
           </h1>
           <p className="text-center text-gray-600 mt-2 text-sm md:text-base">
@@ -25,7 +25,7 @@ const Index = () => {
         <div className="w-full max-w-3xl">
           <Card className="glass-card border-0 mb-8">
             <CardContent className="p-8 text-center">
-              <h2 className="text-2xl md:text-3xl font-bold mb-6 bg-gradient-to-r from-lon-blue to-lon-lightblue bg-clip-text text-transparent">
+              <h2 className="text-2xl md:text-3xl font-bold mb-6 lonpecta-text">
                 Transforme cada participante em mídia viva do seu evento
               </h2>
               
@@ -47,7 +47,7 @@ const Index = () => {
               
               <Button 
                 onClick={() => navigate("/frame-upload")}
-                className="bg-gradient-to-r from-lon-blue to-lon-lightblue hover:opacity-90 text-white py-3 px-8 rounded-full text-lg flex items-center gap-2"
+                className="lonpecta-gradient hover:opacity-90 text-white py-3 px-8 rounded-full text-lg flex items-center gap-2"
               >
                 <span>Começar agora</span>
                 <ArrowRight className="h-5 w-5" />

@@ -127,7 +127,7 @@ export const ImageEditor: React.FC<ImageEditorProps> = ({
           
           // Create an anchor element and trigger download
           const link = document.createElement('a');
-          link.download = 'CISP-Encontro-SP-2025.png';
+          link.download = 'LonFrame-foto.png';
           link.href = url;
           link.click();
           
@@ -140,7 +140,7 @@ export const ImageEditor: React.FC<ImageEditorProps> = ({
         // For desktop browsers
         const dataUrl = canvasRef.current.toDataURL('image/png');
         const link = document.createElement('a');
-        link.download = 'CISP-Encontro-SP-2025.png';
+        link.download = 'LonFrame-foto.png';
         link.href = dataUrl;
         document.body.appendChild(link);
         link.click();
@@ -174,7 +174,7 @@ export const ImageEditor: React.FC<ImageEditorProps> = ({
         <Button 
           onClick={handleDownload} 
           disabled={!isRendered || isGeneratingDownload}
-          className="bg-lon-red hover:bg-lon-blue text-white py-2 px-6 rounded-md flex items-center gap-2"
+          className="lonpecta-gradient hover:opacity-90 text-white py-2 px-6 rounded-md flex items-center gap-2"
         >
           {isGeneratingDownload ? (
             <>

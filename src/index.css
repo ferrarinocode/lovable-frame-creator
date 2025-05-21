@@ -106,4 +106,13 @@
   .glass-input {
     @apply bg-white/20 backdrop-blur-sm border border-white/30 focus:border-white/50 focus:bg-white/30 transition-all duration-300;
   }
+  
+  /* Novos estilos baseados nas cores da Lonpecta */
+  .lonpecta-gradient {
+    @apply bg-gradient-to-r from-lon-blue via-lon-lightblue to-lon-green;
+  }
+  
+  .lonpecta-text {
+    @apply bg-gradient-to-r from-lon-blue via-lon-lightblue to-lon-green bg-clip-text text-transparent;
+  }
 }
