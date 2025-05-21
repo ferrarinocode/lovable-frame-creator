@@ -1,52 +1,12 @@
 
-import { useState, useRef, useEffect } from "react";
+import React from "react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { ImageUploader } from "@/components/ImageUploader";
-import { ImageEditor } from "@/components/ImageEditor";
-import { FrameSelector } from "@/components/FrameSelector";
-import { toast } from "sonner";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { ArrowRight } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
 
 const Index = () => {
-  const [uploadedImage, setUploadedImage] = useState<string | null>(null);
-  const [frameImage, setFrameImage] = useState<HTMLImageElement | null>(null);
-  const [isGeneratingDownload, setIsGeneratingDownload] = useState(false);
-  const [selectedFrameSrc, setSelectedFrameSrc] = useState<string | null>(null);
-  const [currentStep, setCurrentStep] = useState<'frame-selection' | 'photo-upload'>('frame-selection');
-
-  // Load the frame image when it's selected
-  useEffect(() => {
-    if (selectedFrameSrc) {
-      const img = new Image();
-      img.src = selectedFrameSrc;
-      img.onload = () => {
-        setFrameImage(img);
-      };
-      img.onerror = () => {
-        toast.error("Erro ao carregar a moldura");
-      };
-    }
-  }, [selectedFrameSrc]);
-
-  const handleFrameSelect = (frameSrc: string) => {
-    setSelectedFrameSrc(frameSrc);
-    setCurrentStep('photo-upload');
-  };
-
-  const handleImageUpload = (imageDataUrl: string) => {
-    setUploadedImage(imageDataUrl);
-    toast.success("Imagem carregada com sucesso!");
-  };
-
-  const handleResetImage = () => {
-    setUploadedImage(null);
-    toast.info("Você pode selecionar uma nova foto");
-  };
-
-  const handleBackToFrameSelection = () => {
-    setCurrentStep('frame-selection');
-    setUploadedImage(null);
-  };
+  const navigate = useNavigate();
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-lon-pastel-blue to-lon-pastel-purple flex flex-col">
@@ -61,98 +21,55 @@ const Index = () => {
         </div>
       </header>
 
-      <main className="flex-1 flex flex-col items-center py-8 px-4 md:py-12">
-        <div className="w-full max-w-3xl mb-10 text-center">
-          <p className="text-gray-700 text-lg leading-relaxed mb-8 glass-card p-6 animate-float">
-            Vai participar do CISP | Encontro SP 2025? Então entre no clima!<br />
-            Faça o upload da sua foto, aplique nossa moldura oficial e baixe para compartilhar com seus colegas nas redes sociais!
-          </p>
-        </div>
-
-        <div className="w-full max-w-3xl grid gap-8">
-          {currentStep === 'frame-selection' && (
-            <Card className="glass-card border-0">
-              <CardHeader className="text-center">
-                <CardTitle className="bg-gradient-to-r from-lon-blue to-lon-lightblue bg-clip-text text-transparent">Escolha sua moldura</CardTitle>
-                <CardDescription>Selecione uma moldura PNG transparente ou use nossa moldura padrão</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <FrameSelector onFrameSelect={handleFrameSelect} />
-              </CardContent>
-            </Card>
-          )}
-          
-          {currentStep === 'photo-upload' && !uploadedImage && frameImage && (
-            <Card className="glass-card border-0">
-              <CardHeader className="text-center">
-                <CardTitle className="bg-gradient-to-r from-lon-blue to-lon-lightblue bg-clip-text text-transparent">Upload da sua foto</CardTitle>
-                <CardDescription>Selecione uma imagem JPG ou PNG para começar</CardDescription>
-              </CardHeader>
-              <CardContent className="flex flex-col items-center">
-                <div className="mb-6 text-center">
-                  <h3 className="font-medium text-gray-700 mb-3">A moldura ficará assim:</h3>
-                  <div className="mx-auto max-w-[300px] glass-card p-4">
-                    <img 
-                      src={selectedFrameSrc || "/lovable-uploads/6666656a-d829-45d8-85c3-3d15d31e1597.png"} 
-                      alt="Moldura CISP" 
-                      className="w-full h-auto"
-                    />
-                  </div>
-                </div>
+      <main className="flex-1 flex flex-col items-center justify-center py-8 px-4">
+        <div className="w-full max-w-3xl">
+          <Card className="glass-card border-0 mb-8">
+            <CardContent className="p-8 text-center">
+              <h2 className="text-2xl md:text-3xl font-bold mb-6 bg-gradient-to-r from-lon-blue to-lon-lightblue bg-clip-text text-transparent">
+                Transforme cada participante em mídia viva do seu evento
+              </h2>
+              
+              <div className="mb-8">
+                <p className="text-gray-700 text-lg leading-relaxed mb-6">
+                  O LonFrame é uma ferramenta poderosa que permite transformar fotos de participantes de eventos em peças promocionais memoráveis.
+                </p>
                 
-                <div className="w-full space-y-6">
-                  <div className="space-y-4 mb-6 glass-card p-4">
-                    <h3 className="font-medium text-gray-700 text-center">Como funciona:</h3>
-                    <ol className="list-decimal list-inside text-gray-600 space-y-2 text-left">
-                      <li>Faça o upload da sua foto</li>
-                      <li>Veja o resultado com a moldura aplicada</li>
-                      <li>Baixe a imagem final</li>
-                      <li>Compartilhe nas suas redes sociais!</li>
-                    </ol>
-                  </div>
-                  <ImageUploader onImageUpload={handleImageUpload} />
-                  
-                  <div className="flex justify-center mt-4">
-                    <Button
-                      onClick={handleBackToFrameSelection}
-                      variant="outline"
-                      className="glass-card bg-transparent hover:bg-lon-pastel-blue/50 border-white/40 text-lon-blue"
-                    >
-                      Voltar para seleção de moldura
-                    </Button>
-                  </div>
+                <div className="glass-card p-6 text-left mb-8">
+                  <h3 className="font-medium text-gray-700 mb-4 text-center">Como funciona:</h3>
+                  <ol className="list-decimal list-inside text-gray-600 space-y-3">
+                    <li><strong>Carregue sua moldura</strong> - Selecione uma moldura PNG transparente ou use nossa moldura padrão</li>
+                    <li><strong>Compartilhe o link</strong> - Cada moldura terá uma página única para seus participantes</li>
+                    <li><strong>Participantes carregam suas fotos</strong> - A foto será ajustada automaticamente</li>
+                    <li><strong>Compartilhamento</strong> - Os participantes podem baixar e compartilhar nas redes sociais</li>
+                  </ol>
                 </div>
-              </CardContent>
-            </Card>
-          )}
+              </div>
+              
+              <Button 
+                onClick={() => navigate("/frame-upload")}
+                className="bg-gradient-to-r from-lon-blue to-lon-lightblue hover:opacity-90 text-white py-3 px-8 rounded-full text-lg flex items-center gap-2"
+              >
+                <span>Começar agora</span>
+                <ArrowRight className="h-5 w-5" />
+              </Button>
+            </CardContent>
+          </Card>
           
-          {currentStep === 'photo-upload' && uploadedImage && frameImage && (
-            <Card className="glass-card border-0">
-              <CardHeader className="text-center">
-                <CardTitle className="bg-gradient-to-r from-lon-blue to-lon-lightblue bg-clip-text text-transparent">Preview & Download</CardTitle>
-                <CardDescription>Sua foto com moldura está pronta</CardDescription>
-              </CardHeader>
-              <CardContent className="flex flex-col items-center">
-                <ImageEditor 
-                  userImage={uploadedImage} 
-                  frameImage={frameImage} 
-                  isGeneratingDownload={isGeneratingDownload}
-                  setIsGeneratingDownload={setIsGeneratingDownload}
-                  onResetImage={handleResetImage}
-                />
-                
-                <div className="flex justify-center mt-4">
-                  <Button
-                    onClick={handleBackToFrameSelection}
-                    variant="outline"
-                    className="glass-card bg-transparent hover:bg-lon-pastel-blue/50 border-white/40 text-lon-blue"
-                  >
-                    Escolher outra moldura
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          )}
+          <div className="grid md:grid-cols-2 gap-6">
+            <div className="glass-card p-6 text-center">
+              <h3 className="font-medium text-gray-700 mb-3">Molduras Personalizadas</h3>
+              <p className="text-gray-600">
+                Carregue suas próprias molduras PNG transparentes para criar experiências únicas para cada evento.
+              </p>
+            </div>
+            
+            <div className="glass-card p-6 text-center">
+              <h3 className="font-medium text-gray-700 mb-3">Experiência Imersiva</h3>
+              <p className="text-gray-600">
+                Design futurístico e minimalista com interface intuitiva para todos os participantes.
+              </p>
+            </div>
+          </div>
         </div>
       </main>
 
