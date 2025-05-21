@@ -1,65 +1,49 @@
-
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Upload, ArrowRight } from "lucide-react";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { toast } from "sonner";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
+import { FileInput } from "@/components/ui/file-input";
 
 const FrameUpload = () => {
-  const [selectedFrame, setSelectedFrame] = useState<string | null>(null);
-  const [isUploading, setIsUploading] = useState(false);
   const navigate = useNavigate();
-  
-  // Default frame for demonstration
-  const defaultFrame = "/lovable-uploads/6666656a-d829-45d8-85c3-3d15d31e1597.png";
-  
-  const handleFrameUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files.length > 0) {
-      const file = e.target.files[0];
-      
-      if (!file.type.includes('image/png')) {
-        toast.error("Por favor, selecione apenas arquivos PNG");
-        return;
-      }
-      
-      setIsUploading(true);
-      
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        if (event.target?.result) {
-          setSelectedFrame(event.target.result as string);
-          setIsUploading(false);
-        }
-      };
-      reader.onerror = () => {
-        toast.error("Falha ao processar a imagem");
-        setIsUploading(false);
-      };
-      reader.readAsDataURL(file);
+  const [uploadedFrameUrl, setUploadedFrameUrl] = useState<string | null>(null);
+  const [isFrameUploaded, setIsFrameUploaded] = useState(false);
+
+  const handleFrameUpload = (frameDataUrl: string) => {
+    try {
+      // Generate a unique ID for this custom frame
+      const frameId = `custom-${Date.now()}`;
+    
+      // Store the frame in localStorage
+      localStorage.setItem(frameId, frameDataUrl);
+    
+      // Set the uploaded frame and navigate to the photo upload page
+      setUploadedFrameUrl(frameDataUrl);
+      setIsFrameUploaded(true);
+    
+      toast.success("Moldura carregada com sucesso!");
+    
+      // Navigate to the photo upload page with the custom frame ID
+      setTimeout(() => {
+        navigate(`/photo-upload/${frameId}`);
+      }, 1000);
+    } catch (error) {
+      console.error("Error saving frame:", error);
+      toast.error("Erro ao salvar a moldura");
     }
   };
-  
-  const handleContinue = () => {
-    if (selectedFrame) {
-      // Para um app real, enviaríamos isso para um servidor e receberíamos um ID
-      // Por enquanto, usaremos um parâmetro de URL simples com o timestamp como frameId
-      const frameId = `custom-${Date.now()}`;
-      localStorage.setItem(frameId, selectedFrame);
-      navigate(`/photo-upload/${frameId}`);
-      toast.success("Moldura selecionada com sucesso!");
-    } else {
-      // Se nenhuma moldura foi carregada, use a padrão
-      navigate(`/photo-upload/default`);
-      toast.success("Moldura padrão selecionada!");
-    }
+
+  const handleDefaultFrame = () => {
+    navigate("/photo-upload/default");
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-lon-pastel-blue to-lon-pastel-teal flex flex-col">
+    <div className="min-h-screen bg-gradient-to-br from-lon-pastel-blue to-lon-pastel-green flex flex-col">
       <header className="py-6 px-4 glass">
         <div className="max-w-5xl mx-auto">
-          <h1 className="text-3xl md:text-4xl font-bold text-center lonpecta-text">
+          <h1 className="text-3xl md:text-4xl font-bold text-center bg-gradient-to-r from-lon-blue to-lon-lightblue bg-clip-text text-transparent">
             LonFrame
           </h1>
           <p className="text-center text-gray-600 mt-2 text-sm md:text-base">
@@ -68,100 +52,39 @@ const FrameUpload = () => {
         </div>
       </header>
 
-      <main className="flex-1 flex flex-col items-center py-8 px-4 md:py-12">
-        <div className="w-full max-w-3xl mb-10 text-center">
-          <p className="text-gray-700 text-lg leading-relaxed mb-8 glass-card p-6 animate-float">
-            Bem-vindo ao LonFrame! Comece selecionando ou carregando uma moldura para o seu evento.<br />
-            Nossa plataforma transforma fotos comuns em peças promocionais memoráveis.
-          </p>
-        </div>
-
-        <Card className="glass-card border-0 w-full max-w-3xl">
-          <CardHeader className="text-center">
-            <CardTitle className="lonpecta-text">Escolha ou carregue sua moldura</CardTitle>
-            <CardDescription>Selecione uma moldura PNG transparente ou use nossa moldura padrão</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="w-full">
-              <div className="mb-8 text-center">
-                <h3 className="font-medium text-gray-700 mb-4">Moldura padrão:</h3>
-                <div className="mx-auto max-w-[300px] mb-6 glass-card p-4">
-                  <img 
-                    src={defaultFrame} 
-                    alt="Moldura padrão" 
-                    className="w-full h-auto"
-                  />
-                </div>
-                
-                <div className="space-y-4 mb-8 glass-card p-6">
-                  <h3 className="font-medium text-gray-700">Como funciona:</h3>
-                  <ol className="list-decimal list-inside text-gray-600 space-y-2 text-left">
-                    <li>Escolha uma moldura PNG com área transparente</li>
-                    <li>Na próxima etapa, você fará o upload da foto do participante</li>
-                    <li>A foto será ajustada para preencher a área transparente da moldura</li>
-                    <li>O participante poderá baixar e compartilhar nas redes sociais!</li>
-                  </ol>
-                </div>
-              </div>
+      <main className="flex-1 flex flex-col items-center justify-center py-8 px-4">
+        <div className="w-full max-w-3xl">
+          <Card className="glass-card border-0 mb-8">
+            <CardContent className="p-8 text-center">
+              <h2 className="text-2xl md:text-3xl font-bold mb-6 bg-gradient-to-r from-lon-blue to-lon-lightblue bg-clip-text text-transparent">
+                Carregue sua moldura personalizada
+              </h2>
               
-              <div className="space-y-6 w-full">
-                <div className="glass-card transition-all duration-300 hover:shadow-xl p-8 text-center cursor-pointer hover:bg-lon-pastel-green/30">
-                  <input
-                    type="file"
-                    id="frameInput"
-                    onChange={handleFrameUpload}
-                    accept="image/png"
-                    className="hidden"
-                  />
-                  <label htmlFor="frameInput" className="cursor-pointer">
-                    <Upload className="mx-auto h-12 w-12 text-lon-blue" />
-                    <p className="mt-4 text-sm text-gray-600">
-                      Clique para fazer upload de sua própria moldura (PNG)
-                    </p>
-                  </label>
-                </div>
-                
-                {selectedFrame && (
-                  <div className="mt-6 text-center">
-                    <h3 className="font-medium text-gray-700 mb-2">Moldura selecionada:</h3>
-                    <div className="mx-auto max-w-[300px] glass-card p-4">
-                      <img 
-                        src={selectedFrame} 
-                        alt="Moldura selecionada" 
-                        className="w-full h-auto"
-                      />
-                    </div>
-                  </div>
-                )}
-                
-                <div className="flex justify-center mt-8">
-                  <Button
-                    onClick={handleContinue}
-                    disabled={isUploading}
-                    className="lonpecta-gradient hover:opacity-90 text-white flex items-center gap-2"
-                  >
-                    {isUploading ? (
-                      <>
-                        <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                        <span>Processando...</span>
-                      </>
-                    ) : (
-                      <>
-                        <span>{selectedFrame ? "Continuar com esta moldura" : "Continuar com a moldura padrão"}</span>
-                        <ArrowRight className="h-5 w-5" />
-                      </>
-                    )}
-                  </Button>
-                </div>
+              <p className="text-gray-700 text-lg leading-relaxed mb-6">
+                Selecione uma moldura PNG transparente para usar em suas fotos.
+              </p>
+
+              <FileInput 
+                onFileSelected={handleFrameUpload}
+                accept="image/png"
+              />
+
+              <div className="mt-8">
+                <Button 
+                  onClick={handleDefaultFrame}
+                  className="lonpecta-gradient hover:opacity-90 text-white py-3 px-8 rounded-full text-lg"
+                >
+                  Usar moldura padrão
+                </Button>
               </div>
-            </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+        </div>
       </main>
 
       <footer className="py-6 px-4 text-center glass mt-10">
         <p className="text-gray-500 text-sm">
-          LonFrame - Lon Systems
+          LonFrame - Lon Systems © 2025
         </p>
       </footer>
     </div>

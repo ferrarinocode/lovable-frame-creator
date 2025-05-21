@@ -13,6 +13,7 @@ const PhotoUpload = () => {
   const [uploadedImage, setUploadedImage] = useState<string | null>(null);
   const [frameImage, setFrameImage] = useState<HTMLImageElement | null>(null);
   const [isGeneratingDownload, setIsGeneratingDownload] = useState(false);
+  const [isLoadingFrame, setIsLoadingFrame] = useState(true);
 
   // Default frame for demonstration
   const defaultFrame = "/lovable-uploads/6666656a-d829-45d8-85c3-3d15d31e1597.png";
@@ -25,29 +26,47 @@ const PhotoUpload = () => {
       return;
     }
 
+    setIsLoadingFrame(true);
     let frameSrc = "";
     
     if (frameId === "default") {
       frameSrc = defaultFrame;
     } else if (frameId.startsWith("custom-")) {
-      const storedFrame = localStorage.getItem(frameId);
-      if (storedFrame) {
-        frameSrc = storedFrame;
-      } else {
-        toast.error("Moldura não encontrada");
-        navigate("/");
+      try {
+        const storedFrame = localStorage.getItem(frameId);
+        if (storedFrame) {
+          frameSrc = storedFrame;
+        } else {
+          // Handle case where frame isn't in local storage
+          console.error("Frame not found in local storage:", frameId);
+          toast.error("Moldura não encontrada no armazenamento local");
+          navigate("/frame-upload");
+          return;
+        }
+      } catch (error) {
+        console.error("Error retrieving frame from storage:", error);
+        toast.error("Erro ao carregar a moldura");
+        navigate("/frame-upload");
         return;
       }
     }
 
+    console.log("Loading frame from source:", frameSrc);
+
     const img = new Image();
+    img.crossOrigin = "anonymous"; // Enable CORS for the image
     img.src = frameSrc;
+    
     img.onload = () => {
+      console.log("Frame loaded successfully");
       setFrameImage(img);
+      setIsLoadingFrame(false);
     };
-    img.onerror = () => {
+    
+    img.onerror = (error) => {
+      console.error("Error loading frame image:", error);
       toast.error("Erro ao carregar a moldura");
-      navigate("/");
+      navigate("/frame-upload");
     };
   }, [frameId, navigate]);
 
@@ -83,7 +102,16 @@ const PhotoUpload = () => {
         </div>
 
         <div className="w-full max-w-3xl grid gap-8">
-          {!uploadedImage && frameImage && (
+          {isLoadingFrame && (
+            <Card className="glass-card border-0 p-8 text-center">
+              <div className="flex flex-col items-center justify-center min-h-[200px]">
+                <div className="w-12 h-12 border-4 border-lon-blue border-t-transparent rounded-full animate-spin mb-4"></div>
+                <p className="text-gray-600">Carregando sua moldura...</p>
+              </div>
+            </Card>
+          )}
+
+          {!isLoadingFrame && !uploadedImage && frameImage && (
             <Card className="glass-card border-0">
               <CardHeader className="text-center">
                 <CardTitle className="bg-gradient-to-r from-lon-blue to-lon-lightblue bg-clip-text text-transparent">Upload da sua foto</CardTitle>
@@ -117,7 +145,7 @@ const PhotoUpload = () => {
             </Card>
           )}
           
-          {uploadedImage && frameImage && (
+          {!isLoadingFrame && uploadedImage && frameImage && (
             <Card className="glass-card border-0">
               <CardHeader className="text-center">
                 <CardTitle className="bg-gradient-to-r from-lon-blue to-lon-lightblue bg-clip-text text-transparent">Preview & Download</CardTitle>
@@ -139,7 +167,7 @@ const PhotoUpload = () => {
 
       <footer className="py-6 px-4 text-center glass mt-10">
         <p className="text-gray-500 text-sm">
-          LonFrame - Lon Systems
+          LonFrame - Lon Systems © 2025
         </p>
       </footer>
     </div>
