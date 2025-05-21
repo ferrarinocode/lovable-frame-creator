@@ -31,7 +31,7 @@ const Index = () => {
               
               <div className="mb-8">
                 <p className="text-gray-700 text-lg leading-relaxed mb-6">
-                  O LonFrame é uma ferramenta poderosa que permite transformar fotos de participantes de eventos em peças promocionais memoráveis.
+                  O LonFrame é uma ferramenta moderna e futurista que permite transformar fotos de participantes de eventos em peças promocionais memoráveis.
                 </p>
                 
                 <div className="glass-card p-6 text-left mb-8">
@@ -56,14 +56,14 @@ const Index = () => {
           </Card>
           
           <div className="grid md:grid-cols-2 gap-6">
-            <div className="glass-card p-6 text-center">
+            <div className="glass-card p-6 text-center hover:shadow-lg transition-all duration-300">
               <h3 className="font-medium text-gray-700 mb-3">Molduras Personalizadas</h3>
               <p className="text-gray-600">
                 Carregue suas próprias molduras PNG transparentes para criar experiências únicas para cada evento.
               </p>
             </div>
             
-            <div className="glass-card p-6 text-center">
+            <div className="glass-card p-6 text-center hover:shadow-lg transition-all duration-300">
               <h3 className="font-medium text-gray-700 mb-3">Experiência Imersiva</h3>
               <p className="text-gray-600">
                 Design futurístico e minimalista com interface intuitiva para todos os participantes.
@@ -75,7 +75,7 @@ const Index = () => {
 
       <footer className="py-6 px-4 text-center glass mt-10">
         <p className="text-gray-500 text-sm">
-          LonFrame - Lon Systems
+          LonFrame - Lon Systems © 2025
         </p>
       </footer>
     </div>
