@@ -29,6 +29,14 @@ export default {
 					red: '#c6232c',
 					blue: '#274983',
 					lightblue: '#3a75c4',
+					pastel: {
+						blue: '#D3E4FD',
+						green: '#F2FCE2',
+						yellow: '#FEF7CD',
+						purple: '#E5DEFF',
+						pink: '#FFDEE2',
+						peach: '#FDE1D3',
+					}
 				},
 				primary: {
 					DEFAULT: 'hsl(var(--primary))',
@@ -90,11 +98,16 @@ export default {
 					to: {
 						height: '0'
 					}
+				},
+				'float': {
+					'0%, 100%': { transform: 'translateY(0)' },
+					'50%': { transform: 'translateY(-5px)' }
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'float': 'float 3s ease-in-out infinite'
 			}
 		}
 	},
